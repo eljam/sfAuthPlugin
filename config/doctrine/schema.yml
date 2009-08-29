@@ -1,0 +1,121 @@
+---
+sfAuthUser:
+    actAs:
+        Timestampable
+    columns:
+        username: string(255)
+        email: string(255)
+        password: string(255)
+        salt: string(255)
+        is_active:
+            type: boolean
+            default: 0
+        is_super_admin:
+            type: boolean
+            default: 0
+        activate_hash: string(255)
+        reset_hash: string(255)
+        reset_hash_created_at: integer
+        remember_me_hash: string(255)
+    indexes:
+        uniques:
+            fields:
+                username:
+                    length: 255
+                email:
+                    length: 255
+            type: unique
+    relations:
+        Groups:
+            class: sfAuthGroup
+            refClass: sfAuthUserGroup
+        Credentials:
+            class: sfAuthCredential
+            refClass: sfAuthUserCredential
+        
+sfAuthGroup:
+    actAs:
+        Timestampable:
+    columns:
+        name:
+            type: string(255)
+    indexes:
+        uniques:
+            fields:
+                name:
+                    length: 255
+            type: unique
+    relations:
+        Credentials:
+            class: sfAuthCredential
+            refClass: sfAuthGroupCredential
+        
+sfAuthUserGroup:
+    columns:
+        sf_auth_user_id:
+            type: integer
+            primary: true
+        sf_auth_group_id:
+            type: integer
+            primary: true
+    relations:
+        sfAuthUser:
+            onDelete: CASCADE
+        sfAuthGroup:
+            onDelete: CASCADE
+
+sfAuthCredential:
+    actAs:
+        Timestampable:
+    columns:
+        name:
+            type: string(255)
+    indexes:
+        uniques:
+            fields:
+                name:
+                    length: 255
+            type: unique
+            
+sfAuthUserCredential:
+    columns:
+        sf_auth_user_id:
+            type: integer
+            primary: true
+        sf_auth_credential_id:
+            type: integer
+            primary: true
+            
+sfAuthGroupCredential:
+    columns:
+        sf_auth_group_id:
+            type: integer
+            primary: true
+        sf_auth_credential_id:
+            type: integer
+            primary: true
+
+sfAuthIdentity:
+    columns:
+        id:
+            type: integer(4)
+            primary: true
+            autoincrement: true
+        sf_auth_user_id:
+            type: integer
+            primary: true
+        url:
+            type: string(255)
+            primary: true
+        provider:
+            type: string(255)
+    indexes:
+        uniques:
+            fields:
+                url:
+                    length: 255
+            type: unique
+    relations:
+        User:
+            class: sfAuthUser
+            foreignType: one

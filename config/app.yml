@@ -1,0 +1,19 @@
+all:
+    sf_auth_plugin:
+        #Auto register routes?
+        register_routes:    true
+        
+        #What field is used for authenticating can be username
+        #or email
+        username_field:     email
+        
+        #encryption
+        hash_type:          sha256 #Name of selected hashing algorithm (i.e. "md5", "sha256", "haval160,4", etc..)  
+        salt:               something #A secret salt for this project.
+        rpx_api:            d44411f37ca864db2aeb5f6dda37cc87bb90467f
+        
+        #cookie
+        cookie_expire:      1209600 #time in seconds that will be appended to time()
+        cookie_name:        sfAuthUserCookie
+        
+        form_register:      sfAuthProfileForm
